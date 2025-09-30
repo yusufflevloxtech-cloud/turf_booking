@@ -281,6 +281,21 @@ path.two {
         fill: white;
     }
 }
+@media (max-width: 576px) {
+    .cta {
+        font-size: 24px;
+        padding: 10px 20px;
+    }
+    .cta svg {
+        height: 24px;
+    }
+
+    .cta span:nth-child(2) {
+        margin-left: 15px;
+        width: 15px;
+        top: 20%;
+    }
+}
 
 .btn-secondary {
     background: linear-gradient(45deg, #000000, #000000);
