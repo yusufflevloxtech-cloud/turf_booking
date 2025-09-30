@@ -307,3 +307,50 @@ h3 {
 ::-webkit-scrollbar-thumb:hover {
     background: #764ba2;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Additional mobile-specific fixes */
+@media (max-width: 768px) {
+    .input-date {
+        /* Force consistent appearance on mobile */
+        min-height: 44px; /* Minimum touch target size */
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Ensure date picker opens properly on mobile */
+    .input-date::-webkit-calendar-picker-indicator {
+        padding: 8px;
+        background: transparent;
+        cursor: pointer;
+    }
+}
+
+/* Alternative: Use a custom date picker trigger */
+.date-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 300px;
+}
+
+.date-input-wrapper::after {
+    content: "📅";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 18px;
+}
