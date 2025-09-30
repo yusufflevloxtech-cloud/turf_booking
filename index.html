@@ -278,8 +278,13 @@ document.getElementById('bookingDate').addEventListener('blur', function() {
       colorLight: "#ffffff"
     });
 
-    // Show popup
+    // Show popup only if date and slots are selected
     bookNowBtn.addEventListener("click", () => {
+      const bookingDate = bookingDateInput.value;
+      const selectedSlots = document.querySelectorAll('.slot.selected');
+      if (!bookingDate || selectedSlots.length === 0) {
+        return; // Do not show QR popup
+      }
       qrCodeContainer.classList.remove("hidden");
       overlay.classList.remove("hidden");
     });
