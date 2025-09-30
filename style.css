@@ -321,6 +321,61 @@ h3 {
 
 
 
+.input-date {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    transition: border-color 0.3s ease;
+    background: white;
+    position: relative;
+}
+
+/* Ensure placeholder text is visible */
+.input-date:invalid {
+    color: #999;
+}
+
+/* Webkit browsers (Chrome, Safari, newer Edge) */
+.input-date::-webkit-datetime-edit {
+    color: #999;
+}
+
+.input-date:focus::-webkit-datetime-edit {
+    color: #333;
+}
+
+.input-date:not(:focus):invalid::-webkit-datetime-edit {
+    color: #999;
+}
+
+/* Firefox */
+.input-date:invalid {
+    color: #999;
+}
+
+.input-date:focus {
+    color: #333;
+}
+
+/* Fallback for mobile devices */
+.input-date::before {
+    content: attr(placeholder);
+    color: #999;
+    position: absolute;
+    pointer-events: none;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.input-date:focus::before,
+.input-date:valid::before {
+    display: none;
+}
+
 /* Additional mobile-specific fixes */
 @media (max-width: 768px) {
     .input-date {
