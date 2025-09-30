@@ -389,6 +389,20 @@ path.two {
         max-width: 100%;
     }
 }
+@media (max-width: 576px) {
+    .qr-container {
+        padding: 40px;
+    }
+    #qrcode img {
+        width: 180px;
+    }
+    #closeBtn {
+        font-size: 18px;
+        top: 3%;
+        right: 3%;
+        padding: 4px 10px;
+    }
+}
 
 @media (max-width: 480px) {
     body {
