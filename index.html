@@ -56,10 +56,13 @@
         </div>
     </div>
 
-    <div id="qrCodeContainer" class="qr-container hidden">
-        <h3>Your Booking QR Code</h3>
-        <div id="qrcode"></div>
-    </div>
+ <div id="overlay" class="overlay hidden"></div>
+  <div id="qrCodeContainer" class="qr-container hidden">
+    <h3>Your Booking QR Code</h3>
+    <div id="qrcode"></div>
+    <br>
+    <button id="closeBtn">x</button>
+  </div>
 </div>
 
 <div class="owner-section">
@@ -239,8 +242,8 @@
 
         new QRCode(qrCodeDiv, {
             text: text,
-            width: 128,
-            height: 128,
+            width: 228,
+            height:228,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.H
@@ -260,6 +263,39 @@ document.getElementById('bookingDate').addEventListener('blur', function() {
     }
 });
 </script>
+
+<script>
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    const qrDiv = document.getElementById("qrcode");
+
+    // Generate QR once
+    const qrCode = new QRCode(qrDiv, {
+      text: "https://your-booking-link.com",
+      width: 228,
+      height: 228,
+      colorDark: "#000000",
+      colorLight: "#ffffff"
+    });
+
+    // Show popup
+    bookNowBtn.addEventListener("click", () => {
+      qrCodeContainer.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+    });
+
+    // Close popup
+    closeBtn.addEventListener("click", () => {
+      qrCodeContainer.classList.add("hidden");
+      overlay.classList.add("hidden");
+    });
+
+    // Close if overlay clicked
+    overlay.addEventListener("click", () => {
+      qrCodeContainer.classList.add("hidden");
+      overlay.classList.add("hidden");
+    });
+  </script>
 
 </body>
 </html>
