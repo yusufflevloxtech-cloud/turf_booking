@@ -228,5 +228,18 @@
     }
 </script>
 
+<script>
+    // Add this JavaScript to handle the date input
+document.getElementById('bookingDate').addEventListener('focus', function() {
+    this.classList.add('focused');
+});
+
+document.getElementById('bookingDate').addEventListener('blur', function() {
+    if (this.value === '') {
+        this.classList.remove('focused');
+    }
+});
+</script>
+
 </body>
 </html>
