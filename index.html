@@ -100,7 +100,7 @@
     const slotError = document.getElementById('slotError');
     const ownerDateError = document.getElementById('ownerDateError');
 
-    const sports = ['football', 'cricket', 'volleyball'];
+    const sports = ['football', 'cricket', 'pickelball'];
     const timeSlots = [];
     for (let i = 0; i < 24; i++) {
         timeSlots.push(`${i.toString().padStart(2, '0')}:00 - ${(i + 1).toString().padStart(2, '0')}:00`);
@@ -251,20 +251,9 @@
     }
 </script>
 
-<script>
-    // Add this JavaScript to handle the date input
-document.getElementById('bookingDate').addEventListener('focus', function() {
-    this.classList.add('focused');
-});
 
-document.getElementById('bookingDate').addEventListener('blur', function() {
-    if (this.value === '') {
-        this.classList.remove('focused');
-    }
-});
-</script>
 
-<script>
+<script> //popup QR code
     const overlay = document.getElementById("overlay");
     const closeBtn = document.getElementById("closeBtn");
     const qrDiv = document.getElementById("qrcode");
@@ -301,6 +290,37 @@ document.getElementById('bookingDate').addEventListener('blur', function() {
       overlay.classList.add("hidden");
     });
   </script>
+
+<script>   // booking details for under QR code
+    function generateQRCode(text) {
+    const qrCodeDiv = document.getElementById('qrcode');
+    qrCodeDiv.innerHTML = '';
+    qrCodeContainer.classList.remove('hidden');
+
+    new QRCode(qrCodeDiv, {
+        text: text,
+        width: 228,
+        height:228,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+    // Show booking details under QR code
+    let detailsObj = JSON.parse(text);
+    let detailsHtml = `
+        <div class="booking-details">
+            <strong>Sport:</strong> ${detailsObj.sport}<br>
+            <strong>Date:</strong> ${detailsObj.date}<br>
+            <strong>Slots:</strong> ${detailsObj.slots.join(', ')}
+        </div>
+    `;
+    // Remove previous details if any
+    let oldDetails = document.querySelector('#qrCodeContainer .booking-details');
+    if (oldDetails) oldDetails.remove();
+    qrCodeDiv.insertAdjacentHTML('afterend', detailsHtml);
+}
+</script>
 
 </body>
 </html>
