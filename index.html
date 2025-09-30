@@ -21,7 +21,7 @@
 
     <div class="section">
         <h2>Choose Date and Time</h2>
-        <input type="date" id="bookingDate" class="input-date" required>
+        <input type="text" id="bookingDate" class="input-date" required placeholder="dd/mm/yyyy" onfocus="(this.type='date')" onblur="if(this.value===''){this.type='text'}">
         <span id="dateError" style="color:red;display:none;">Please select a date.</span>
     </div>
 
