@@ -7,6 +7,12 @@
 html, body {
     scroll-behavior: smooth;
 }
+#logo {
+    display: block;
+    margin: 0 auto 20px auto;
+    max-width: 200px;
+    height: auto;
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
