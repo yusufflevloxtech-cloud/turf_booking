@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mr.360 Turf Booking</title>
+    <title>Mr.360 Turf Booking - User Panel</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <img src="img/mr360logo.png" class="img-fluid" id="logo" alt="">
+    <img src="img/mr360logo.png" class="img-fluid" id="logo" alt="Mr.360 Sports Arena Logo">
     <h1>Turf Slot Booking</h1>
+    <p style="text-align: center; margin-bottom: 20px;">
+<a href="log.html" style="color: #007bff; text-decoration: none;">Go to Admin Panel</a>
+    </p>
 
     <div class="section">
         <h2>Choose Your Sport</h2>
@@ -27,62 +31,37 @@
     </div>
 
     <div class="section">
-        <h3 id="slotHeader">Available Slots for : <span id="selectedDateText">[please select a date]</span></h3>
+        <h3 id="slotHeader">Available Slots for : <span id="selectedDateText">[Date]</span></h3>
         <div id="slotsContainer" class="slots-grid">
-        </div>
+            </div>
         <span id="slotError" style="color:red;display:none;">Please select at least one slot to book.</span>
     </div>
 
     <div class="section">
         <div class="wrapper">
-            <a class="cta" id="bookNowBtn">
-                <span>Book now</span>
-                <span>
-                    <svg width="66px" height="43px" viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="arrow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <path class="one"
-                                d="M40.1543933,3.89485454 L43.9763149,0.139296592 C44.1708311,-0.0518420739 44.4826329,-0.0518571125 44.6771675,0.139262789 L65.6916134,20.7848311 C66.0855801,21.1718824 66.0911863,21.8050225 65.704135,22.1989893 C65.7000188,22.2031791 65.6958657,22.2073326 65.6916762,22.2114492 L44.677098,42.8607841 C44.4825957,43.0519059 44.1708242,43.0519358 43.9762853,42.8608513 L40.1545186,39.1069479 C39.9575152,38.9134427 39.9546793,38.5968729 40.1481845,38.3998695 C40.1502893,38.3977268 40.1524132,38.395603 40.1545562,38.3934985 L56.9937789,21.8567812 C57.1908028,21.6632968 57.193672,21.3467273 57.0001876,21.1497035 C56.9980647,21.1475418 56.9959223,21.1453995 56.9937605,21.1432767 L40.1545208,4.60825197 C39.9574869,4.41477773 39.9546013,4.09820839 40.1480756,3.90117456 C40.1501626,3.89904911 40.1522686,3.89694235 40.1543933,3.89485454 Z"
-                                fill="#FFFFFF"></path>
-                            <path class="two"
-                                d="M20.1543933,3.89485454 L23.9763149,0.139296592 C24.1708311,-0.0518420739 24.4826329,-0.0518571125 24.6771675,0.139262789 L45.6916134,20.7848311 C46.0855801,21.1718824 46.0911863,21.8050225 45.704135,22.1989893 C45.7000188,22.2031791 45.6958657,22.2073326 45.6916762,22.2114492 L24.677098,42.8607841 C24.4825957,43.0519059 24.1708242,43.0519358 23.9762853,42.8608513 L20.1545186,39.1069479 C19.9575152,38.9134427 19.9546793,38.5968729 20.1481845,38.3998695 C20.1502893,38.3977268 20.1524132,38.395603 20.1545562,38.3934985 L36.9937789,21.8567812 C37.1908028,21.6632968 37.193672,21.3467273 37.0001876,21.1497035 C36.9980647,21.1475418 36.9959223,21.1453995 36.9937605,21.1432767 L20.1545208,4.60825197 C19.9574869,4.41477773 19.9546013,4.09820839 20.1480756,3.90117456 C20.1501626,3.89904911 20.1522686,3.89694235 20.1543933,3.89485454 Z"
-                                fill="#FFFFFF"></path>
-                            <path class="three"
-                                d="M0.154393339,3.89485454 L3.97631488,0.139296592 C4.17083111,-0.0518420739 4.48263286,-0.0518571125 4.67716753,0.139262789 L25.6916134,20.7848311 C26.0855801,21.1718824 26.0911863,21.8050225 25.704135,22.1989893 C25.7000188,22.2031791 25.6958657,22.2073326 25.6916762,22.2114492 L4.67709797,42.8607841 C4.48259567,43.0519059 4.17082418,43.0519358 3.97628526,42.8608513 L0.154518591,39.1069479 C-0.0424848215,38.9134427 -0.0453206733,38.5968729 0.148184538,38.3998695 C0.150289256,38.3977268 0.152413239,38.395603 0.154556228,38.3934985 L16.9937789,21.8567812 C17.1908028,21.6632968 17.193672,21.3467273 17.0001876,21.1497035 C16.9980647,21.1475418 16.9959223,21.1453995 16.9937605,21.1432767 L0.15452076,4.60825197 C-0.0425130651,4.41477773 -0.0453986756,4.09820839 0.148075568,3.90117456 C0.150162624,3.89904911 0.152268631,3.89694235 0.154393339,3.89485454 Z"
-                                fill="#FFFFFF"></path>
-                        </g>
-                    </svg>
-                </span>
-            </a>
+           <a class="cta" id="bookNowBtn">
+               <span>Book now</span>
+               <span><svg width="66px" height="43px" viewBox="0 0 66 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+               <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                   <path class="one" fill="#FFFFFF" d="M10.0729979,21.1969637 L19.4319623,26.541159 C20.5401962,27.1873111 21.758701,27.0504106 22.7561875,26.155461 L54.717462,3.2201648 C55.6797126,2.3045763 55.6795804,0.865422 54.7171465,-0.0501648003 L22.7558514,22.8851398 C21.7584144,23.7801944 20.5401962,23.6432939 19.4320268,22.9971418 L10.0729979,17.6529465 C8.96476495,17.0067944 8.6543415,15.8647775 9.07722744,14.6548766 L12.0163351,5.55836279 C12.4392211,4.34846187 13.5654399,3.87413066 14.6736729,4.52028279 L62.8344382,31.0547024 C63.9426712,31.7008545 64.2530946,32.8428714 63.8302086,34.0527723 L60.8910909,43.1492861 C60.4682049,44.3591871 59.3419861,44.8335183 58.2337531,44.1873662 L10.0729979,17.6529465 C8.96476495,17.0067944 8.6543415,15.8647775 9.07722744,14.6548766 Z"></path>
+                   <path class="two" fill="#FFFFFF" d="M0.154393339,3.89485454 C0.347867582,3.70137015 0.664437039,3.70423933 0.861460863,3.89771357 L17.7002014,20.4344498 C17.8969423,20.627924 17.8941013,20.9444934 17.700617,21.1415172 L0.861460863,37.6782535 C0.664437039,37.8717379 0.347851429,37.8688568 0.154377186,37.6753826 C0.152280267,37.6732402 0.150183348,37.6710978 0.14808643,37.6689555 L-0.048995393,37.4720216 C-0.048995393,37.4720216 0.154393339,3.89485454 0.154393339,3.89485454 Z" transform="translate(8.751694, 20.856536) rotate(-360.000000) translate(-8.751694, -20.856536)"></path>
+                   <path class="three" fill="#FFFFFF" d="M0.154393339,38.3948545 L0.154393339,3.89485454 C0.154393339,3.89485454 0.154393339,3.89485454 0.154393339,3.89485454 Z" transform="translate(0.154393, 21.144855) rotate(-360.000000) translate(-0.154393, -21.144855)"></path>
+               </g>
+           </svg></span>
+           </a>
         </div>
     </div>
 
- <div id="overlay" class="overlay hidden"></div>
-  <div id="qrCodeContainer" class="qr-container hidden">
-    <h3>Your Booking QR Code</h3>
-    <div id="qrcode"></div>
-    <br>
-    <button id="closeBtn">x</button>
-  </div>
+    <div id="qrCodeContainer" class="qr-container hidden">
+        <h3 style="text-align: center; margin-bottom: 20px;">Booking Confirmed!</h3>
+        <p style="text-align: center; margin-bottom: 10px;">Scan the QR code to save your details.</p>
+        <div id="qrcode" style="margin: 0 auto; width: 228px; height: 228px;"></div>
+        <div id="bookingDetailsContainer"></div>
+        <button id="closeBtn" class="close-btn">x</button>
+    </div>
+    <div id="overlay" class="overlay hidden"></div>
 </div>
 
-<div class="owner-section">
-    <h2>Owner's Panel</h2>
-    <div class="section">
-        <p>Select a date</p>
-        <input type="date" id="ownerDate" class="input-date" required>
-        <button id="showSlotsBtn" class="btn-secondary">Show Booking Slots</button>
-        <span id="ownerDateError" style="color:red;display:none;">Please select a date.</span>
-    </div>
-    <div class="section">
-        <p>Please select date to view booking slots.</p>
-        <div id="ownerSlotsContainer" class="slots-grid">
-        </div>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>
