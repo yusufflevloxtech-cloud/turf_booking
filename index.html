@@ -8,6 +8,17 @@
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 </head>
 <body>
+    <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loader-container">
+            <img src="https://webstrot.com/html/sporteyz/assets/img/loader.gif" class="loader-gif" alt="Loading football animation">
+            <!-- <p class="loading-text">Preparing the Pitch...</p> -->
+            <div class="progress">
+                <div class="progress-bar" id="loading-bar"></div>
+            </div>
+        </div>
+    </div>
 <div class="container">
     <img src="img/mr360logo.png" class="img-fluid" id="logo" alt="Mr.360 Sports Arena Logo">
     <h1>Turf Slot Booking</h1>
@@ -70,7 +81,34 @@
     </div>
     <div id="overlay" class="overlay hidden"></div>
 </div>
-
 <script src="script.js"></script>
+<script>
+        // Simulate loading progress
+        function simulateLoading() {
+            let progress = 0;
+            const bar = document.getElementById('loading-bar');
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(hideLoader, 200);
+                }
+                bar.style.width = progress + '%';
+            }, 200);
+        }
+        
+        function hideLoader() {
+            const loader = document.querySelector('.loading-screen');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 200);
+        }
+        
+        // Start loading simulation when page loads
+        window.addEventListener('load', simulateLoading);
+    </script>
 </body>
 </html>
