@@ -175,9 +175,12 @@
 
  /* Personal Details Form Styles */
  .form-label {
+    display: flex;
      font-weight: 600;
      margin-bottom: 8px;
      color: #2c3e50;
+     gap: 5px;
+     
  }
 
  .form-control {
@@ -258,13 +261,57 @@
      margin-right: 45px;
  }
 
- span {
+ .owner-section .d-flex {
+    display: flex !important;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.owner-section .d-flex .input-date {
+    margin-right: 1rem;
+}
+
+.owner-section .d-flex #ownerDateError {
+    white-space: nowrap;
+}
+
+/* Responsive adjustments for owner section */
+@media (max-width: 576px) {
+    .owner-section .d-flex {
+        flex-direction: column;
+        align-items: start !important;
+    }
+    
+    .owner-section .d-flex .input-date {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .owner-section .d-flex #ownerDateError {
+        order: 3; /* Move error to bottom */
+        white-space: normal;
+        left: 5px;
+    }
+    
+    .owner-section .d-flex .btn {
+        order: 2; /* Keep button in middle */
+        width: 100%;
+        margin-top: 0;
+    }
+    
+    .owner-section .d-flex .input-date {
+        order: 1; /* Keep input at top */
+    }
+}
+ /* span {
      transform: skewX(15deg)
- }
+ } */
 
  span:nth-child(2) {
      width: 20px;
-     margin-left: 30px;
+     margin-left: 30px; 
      position: relative;
      top: 12%;
  }
@@ -326,8 +373,8 @@
      }
 
      .cta span:nth-child(2) {
-         margin-left: 15px;
-         width: 15px;
+         margin-left: 5px;
+         /* width: 15px; */
          top: 20%;
      }
  }
@@ -397,7 +444,7 @@
      .container,
      .owner-section {
          padding: 20px;
-         margin: 10px;
+         /* margin: 10px; */
      }
 
      h1 {
@@ -421,6 +468,7 @@
  @media (max-width: 576px) {
      .qr-container {
          padding: 40px;
+         /* top: 45%; */
      }
 
      #qrcode img {
@@ -665,6 +713,13 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
+#showSlotsBtn:hover {
+    background-color: white;
+    color: black;
+    box-shadow: 0px 0px 1px 1px #0000009f;
+}
+
+
 
 
 

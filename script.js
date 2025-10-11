@@ -13,7 +13,6 @@ const selectedDateText = document.getElementById('selectedDateText');
 const dateError = document.getElementById('dateError');
 const slotError = document.getElementById('slotError');
 const ownerDateError = document.getElementById('ownerDateError');
-const permanentLink = "https://mr360turf.com/booking-confirmation";
 
 // New elements for personal details
 const userNameInput = document.getElementById('userName');
@@ -360,7 +359,11 @@ function showBookingDetails(slotTime, bookings) {
                         <strong>Booked At:</strong> ${booking.bookingTime}<br>
                     </div>
                 </div>
-                <button class="btn btn-sm btn-danger mt-2" onclick="cancelBooking('${ownerDate}', '${booking.slot}', '${booking.sport}', '${booking.customerName}')">
+                <button class="btn btn-sm btn-danger mt-2 cancel-booking-btn" 
+                        data-date="${ownerDate}" 
+                        data-slot="${booking.slot}" 
+                        data-sport="${booking.sport}" 
+                        data-customer="${booking.customerName}">
                     Cancel Booking
                 </button>
             </div>
@@ -369,6 +372,17 @@ function showBookingDetails(slotTime, bookings) {
     
     contentHTML += `</div>`;
     modalContent.innerHTML = contentHTML;
+    
+    // Add event listeners to cancel buttons
+    document.querySelectorAll('.cancel-booking-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const date = this.getAttribute('data-date');
+            const slot = this.getAttribute('data-slot');
+            const sport = this.getAttribute('data-sport');
+            const customerName = this.getAttribute('data-customer');
+            cancelBooking(date, slot, sport, customerName);
+        });
+    });
     
     // Show the modal
     const modal = new bootstrap.Modal(document.getElementById('bookingDetailsModal'));
@@ -383,6 +397,12 @@ function cancelBooking(date, slot, sport, customerName) {
             bookedSlots[date] = bookedSlots[date].filter(booking => 
                 !(booking.slot === slot && booking.sport === sport && booking.customerName === customerName)
             );
+            
+            // Close the modal first
+            const modal = bootstrap.Modal.getInstance(document.getElementById('bookingDetailsModal'));
+            if (modal) {
+                modal.hide();
+            }
             
             // Refresh the owner slots view
             generateOwnerSlots(date, ownerSlotsContainer);
