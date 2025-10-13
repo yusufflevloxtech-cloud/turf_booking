@@ -482,6 +482,7 @@
      .qr-container {
          padding: 40px;
          /* top: 45%; */
+         height: 100vh;
      }
 
      #qrcode img {
