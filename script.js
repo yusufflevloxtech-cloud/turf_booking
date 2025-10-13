@@ -17,7 +17,6 @@ const ownerDateError = document.getElementById('ownerDateError');
 // New elements for personal details
 const userNameInput = document.getElementById('userName');
 const userMobileInput = document.getElementById('userMobile');
-const userAddressInput = document.getElementById('userAddress');
 const nameError = document.getElementById('nameError');
 const mobileError = document.getElementById('mobileError');
 
@@ -34,9 +33,34 @@ for (let i = 0; i < 24; i++) {
     timeSlots.push(`${i.toString().padStart(2, '0')}:00 - ${(i + 1).toString().padStart(2, '0')}:00`);
 }
 
+// Function to check if a date/time is in the past
+function isPastDate(dateString, slotTime) {
+    const now = new Date();
+    const selectedDate = new Date(dateString);
+    
+    // If no slot time provided, just check the date
+    if (!slotTime) {
+        return selectedDate < new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+    
+    // Parse the slot time (format: "HH:00 - HH:00")
+    const startHour = parseInt(slotTime.split(':')[0]);
+    
+    // Create date object with the selected date and hour
+    const slotDateTime = new Date(selectedDate);
+    slotDateTime.setHours(startHour, 0, 0, 0);
+    
+    return slotDateTime < now;
+}
+
 // Function to check if a slot is available for a specific sport
 function isSlotAvailable(dateKey, slot, selectedSport) {
     const sportGround = sports[selectedSport];
+    
+    // Check if the slot is in the past
+    if (isPastDate(dateKey, slot)) {
+        return false;
+    }
     
     // Check if the slot is blocked
     if (blockedSlots[dateKey] && blockedSlots[dateKey].includes(slot)) {
@@ -75,19 +99,27 @@ function generateAndDisplaySlots(date, container, isOwnerView = false) {
         slotDiv.textContent = slot;
         slotDiv.dataset.slot = slot;
 
-        // Check availability based on sport and ground
-        const isAvailable = isSlotAvailable(dateKey, slot, selectedSport);
+        // Check if slot is in the past
+        const isPast = isPastDate(dateKey, slot);
         
-        if (!isAvailable) {
+        // Check availability based on sport and ground
+        const isAvailable = !isPast && isSlotAvailable(dateKey, slot, selectedSport);
+        
+        if (isPast) {
+            slotDiv.classList.add('past');
+            slotDiv.title = 'This time slot has already passed';
+        } else if (!isAvailable) {
             slotDiv.classList.add('booked');
         }
 
         // Add click listeners
         if (isOwnerView) {
-            // Owner can toggle block status
-            slotDiv.addEventListener('click', () => toggleOwnerControl(slot, dateKey, slotDiv));
+            // Owner can toggle block status for future slots only
+            if (!isPast) {
+                slotDiv.addEventListener('click', () => toggleOwnerControl(slot, dateKey, slotDiv));
+            }
         } else {
-            // Users can only select available slots
+            // Users can only select available future slots
             if (isAvailable) {
                 slotDiv.addEventListener('click', () => toggleSelectSlot(slotDiv));
             }
@@ -129,6 +161,13 @@ function toggleOwnerControl(slot, dateKey, slotDiv) {
     }
 }
 
+// Set min date to today when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    bookingDateInput.setAttribute('min', today);
+    ownerDateInput.setAttribute('min', today);
+});
+
 // Update slots when sport selection changes
 document.querySelectorAll('input[name="sport"]').forEach(radio => {
     radio.addEventListener('change', () => {
@@ -144,6 +183,15 @@ bookingDateInput.addEventListener('change', (e) => {
     const selectedDate = e.target.value;
     selectedDateText.textContent = selectedDate;
     dateError.style.display = 'none';
+    
+    // Check if selected date is in the past
+    if (selectedDate && isPastDate(selectedDate)) {
+        dateError.textContent = 'Please select a future date.';
+        dateError.style.display = 'inline';
+        slotsContainer.innerHTML = '';
+        return;
+    }
+    
     if (selectedDate) {
         generateAndDisplaySlots(selectedDate, slotsContainer);
     }
@@ -158,6 +206,14 @@ bookNowBtn.addEventListener('click', () => {
 
     const bookingDate = bookingDateInput.value;
     if (!bookingDate) {
+        dateError.textContent = 'Please select a date.';
+        dateError.style.display = 'inline';
+        return;
+    }
+
+    // Check if selected date is in the past
+    if (isPastDate(bookingDate)) {
+        dateError.textContent = 'Please select a future date.';
         dateError.style.display = 'inline';
         return;
     }
@@ -199,7 +255,6 @@ bookNowBtn.addEventListener('click', () => {
         slots: slotTimes,
         name: userName,
         mobile: userMobile,
-        address: userAddressInput.value.trim() || 'Not provided',
         bookingTime: new Date().toLocaleString()
     };
 
@@ -214,7 +269,6 @@ bookNowBtn.addEventListener('click', () => {
             sport: selectedSport,
             customerName: userName,
             customerMobile: userMobile,
-            customerAddress: userAddressInput.value.trim() || 'Not provided',
             bookingTime: new Date().toLocaleString(),
             ground: getGroundInfo(selectedSport)
         });
@@ -264,6 +318,9 @@ function generateOwnerSlots(date, container) {
         slotDiv.textContent = slot;
         slotDiv.dataset.slot = slot;
 
+        // Check if slot is in the past
+        const isPast = isPastDate(dateKey, slot);
+        
         // Check if slot is blocked
         const isBlocked = blockedSlots[dateKey] && blockedSlots[dateKey].includes(slot);
         
@@ -275,7 +332,7 @@ function generateOwnerSlots(date, container) {
             if (slotBookings.length > 0) {
                 slotDiv.classList.add('booked');
                 
-                // Add click event to show booking details
+                // Add click event to show booking details (even for past slots)
                 slotDiv.addEventListener('click', () => showBookingDetails(slot, slotBookings));
                 
                 // Add hover tooltip
@@ -289,12 +346,15 @@ function generateOwnerSlots(date, container) {
             }
         }
 
-        if (isBlocked) {
+        if (isPast) {
+            slotDiv.classList.add('past');
+            slotDiv.title = 'Past time slot';
+        } else if (isBlocked) {
             slotDiv.classList.add('blocked');
             slotDiv.title = 'Blocked by owner';
             slotDiv.addEventListener('click', () => toggleOwnerControl(slot, dateKey, slotDiv));
         } else if (slotBookings.length === 0) {
-            // Only allow blocking if no bookings exist
+            // Only allow blocking if no bookings exist and it's not past
             slotDiv.addEventListener('click', () => toggleOwnerControl(slot, dateKey, slotDiv));
         }
 
@@ -351,7 +411,6 @@ function showBookingDetails(slotTime, bookings) {
                         <strong>Customer Details:</strong><br>
                         <strong>Name:</strong> ${booking.customerName}<br>
                         <strong>Mobile:</strong> ${booking.customerMobile}<br>
-                        <strong>Address:</strong> ${booking.customerAddress}<br>
                     </div>
                     <div class="col-md-6">
                         <strong>Booking Information:</strong><br>
@@ -441,7 +500,6 @@ function generateQRCode(text) {
             <strong>Booking Confirmed!</strong><br><br>
             <strong>Name:</strong> ${detailsObj.name}<br>
             <strong>Mobile:</strong> ${detailsObj.mobile}<br>
-            <strong>Address:</strong> ${detailsObj.address}<br>
             <strong>Sport:</strong> ${detailsObj.sport}<br>
             <strong>Ground:</strong> ${detailsObj.ground}<br>
             <strong>Date:</strong> ${detailsObj.date}<br>

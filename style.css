@@ -171,6 +171,19 @@
      border-color: #7f8c8d;
      cursor: not-allowed;
  }
+ /* Add to style.css */
+.slot.past {
+    background: #d3d3d3;
+    color: #888;
+    border-color: #bbb;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.slot.past:hover {
+    transform: none;
+    border-color: #bbb;
+}
 
 
  /* Personal Details Form Styles */
